@@ -1,11 +1,12 @@
 # MedSkin - AI-Powered Skin Disease Diagnosis & Management System
 
-1. [Project Overview](#project-overview)  
-2. [Installation Guide](#installation-guide)    
+1. [Project Overview](#project-overview)
+2. [System Architecture](#system-architecture)
+3. [Installation Guide](#installation-guide)    
    2.1 [Prerequisites](#prerequisites)    
    2.2 [Setup Steps](#setup-steps)  
-3. [Key Features](#key-features)  
-4. [Technical Specifications](#technical-specifications)    
+4. [Key Features](#key-features)  
+5. [Technical Specifications](#technical-specifications)    
    4.1 [Backend Architecture](#backend-architecture)    
    4.2 [Frontend Implementation](#frontend-implementation)    
    4.3 [Machine Learning Components](#machine-learning-components)    
@@ -27,9 +28,26 @@ MedSkin is an intelligent web application combining AI-powered skin disease dete
 - 📊 Automated medical report generation
 - 📈 Treatment effectiveness tracking
 
-[System Architecture Diagram Placeholder: https://via.placeholder.com/800x400.png]
+## System Architecture
 
-## Installation Guide
+```mermaid
+graph TD
+    A[User Browser] --> B[Nginx Web Server]
+    B --> C[Django Application]
+    C --> D[(SQLite)]
+    C --> E[(Neo4j)]
+    C --> F[PyTorch Model]
+    C --> G[Report Generator]
+    C --> H[Authentication Service]
+    D --> I[Patient Records]
+    E --> J[Drug Interactions]
+    F --> K[EfficientNet-B0]
+    G --> L[PDF Reports]
+    H --> M[OAuth2/JWT]
+    N[Medical Devices] --> C
+    O[Mobile App] --> B
+```
+## Installation Guide 
 
 ### Prerequisites
 - Python 3.10+
@@ -159,7 +177,7 @@ transforms.Compose([
 | `/api/reports/` | POST | Generate medical report |
 | `/api/drugs/` | GET | List available medications |
 
-### API Error Reference <a name="api-errors"></a>  
+### API Error Reference 
   
 | HTTP Code | Error Type                | Resolution Steps                      |  
 |-----------|---------------------------|---------------------------------------|  
