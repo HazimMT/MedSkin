@@ -17,7 +17,7 @@ MedSkin is an intelligent web application combining AI-powered skin disease dete
 ### Prerequisites
 - Python 3.10+
 - SQLite 3
-- Neo4j 4.4
+- Neo4j 5.28
 - wkhtmltopdf 0.12.6
 
 ### Setup Steps
@@ -87,7 +87,7 @@ python manage.py loaddata initial_data.json
 ## Technical Specifications
 
 ### Backend Stack
-- Django 4.1 (Web Framework)
+- Django 5.1.7 (Web Framework)
 - SQLite (Primary Database)
 - Neo4j (Graph Database)
 - PyTorch 1.12 (ML Framework)
