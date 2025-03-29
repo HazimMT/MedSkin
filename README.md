@@ -1,7 +1,4 @@
-# MedSkin
- Welcome to the MedSkin project! This repository contains a backend system designed for managing medical reports and patient data. It utilizes various tools and packages to ensure efficient data handling and reporting.
-
- # MedSkin - AI-Powered Skin Disease Diagnosis & Management System
+# MedSkin - AI-Powered Skin Disease Diagnosis & Management System
 
 ## Project Overview
 MedSkin is an intelligent web application combining AI-powered skin disease detection with comprehensive patient management. The system features:
