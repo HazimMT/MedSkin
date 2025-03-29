@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patients Management</title>
+  <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+  <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/patients.css' %}" />
+</head>
+
+<body>
+  <!-- Placeholder for Navbar -->
+  <div id="navbar"></div>
+
+  <!-- Main Content -->
+  <main>
+    <section class="patient-section">
+      <h2>Add New Patient</h2>
+
+      <!-- Patient Form -->
+      <form id="patientForm">
+        <div class="form-group">
+          <label for="patientID">ID Number:</label>
+          <input type="text" id="patientID" name="patientID" required />
+        </div>
+
+        <div class="form-group">
+          <label for="fullName">Full Name:</label>
+          <input type="text" id="fullName" name="fullName" required />
+        </div>
+
+        <div class="form-group">
+          <label for="diseasesDropdown">Diseases:</label>
+          <div class="dropdown"  id="diseasesDropdownWrapper">  <!-- ADDED wrapper DIV here -->
+            <button type="button" class="dropdown-btn" id="diseasesDropdown">
+              Select Diseases
+            </button>
+            <div class="dropdown-content" id="diseasesList">
+              <!-- Drug checkboxes will be populated here -->
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="add-btn">Add Patient</button>
+      </form>
+
+      <!-- Confirmation Message -->
+      <div id="confirmationMessage" class="hidden"></div>
+    </section>
+
+    <hr />
+
+    <!-- Display Added Patients -->
+    <section class="patient-list-section">
+      <h2>Patients List</h2>
+      <ul id="patientsList"></ul>
+    </section>
+  </main>
+
+  <!-- Success/Error Modal -->
+  <div id="messageModal" class="modal hidden">
+    <div class="modal-content" id="modalContent">
+      <div class="modal-icon" id="modalIcon"></div>
+      <h3 id="modalTitle"></h3>
+      <p id="modalMessage"></p>
+      <button class="modal-btn" onclick="closeModal()">Ok</button>
+    </div>
+  </div>
+
+  <script src="{% static 'js/navbar.js' %}"></script>
+  <script src="{% static 'js/patients.js' %}"></script>
+</body>
+
+</html>

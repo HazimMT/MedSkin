@@ -1,0 +1,68 @@
+from jinja2 import Environment, FileSystemLoader
+import pdfkit
+from datetime import datetime
+
+
+def generate_medical_report(output_path, accuracy, medicines, patient_info, doctor_info, disease_name):
+
+    # Set up Jinja2 environment
+    env = Environment(loader=FileSystemLoader('./'))
+    template = env.get_template("report_template.html")
+
+    # Prepare context data
+    context = {
+        'doctor_name': doctor_info.get('name', 'Not assigned'),
+        'specialization': doctor_info.get('specialization', 'Not assigned'),
+        'visit_date': datetime.now().strftime("%d.%m.%Y"),
+
+        'patient_name': patient_info.get('name', ''),
+        'birth_date': patient_info.get('birth_date', ''),
+        'med_number': patient_info.get('med_number', ''),
+        'phone': patient_info.get('phone', ''),
+
+
+        'disease_name': disease_name,
+        'accuracy': accuracy,
+        'medicines': medicines  # Pass the list directly)
+    }
+
+    # Render HTML with context
+    rendered_html = template.render(context)
+
+    # PDF configuration
+    config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
+
+    # Generate PDF
+    pdfkit.from_string(rendered_html, output_path, configuration=config, options={
+        'encoding': 'UTF-8',
+        'quiet': '',
+        'print-media-type': '',
+        'enable-local-file-access': ''
+    })
+
+
+
+patient_data = {
+    'name': 'حزومي',
+    'birth_date': '15.03.1995',
+    'med_number': '421014683',
+    'phone': '+966 500 000 000',
+
+}
+
+doctor_data = {
+    'name': 'الدكتور حازم',
+    'specialization': 'Dermatology'
+}
+
+# Generate report
+generate_medical_report(
+    output_path="medical_report.pdf",
+    accuracy=0.70,
+    disease_name="Psoriasis Vulgaris",
+    medicines=["Clobetasol Propionate 0.05% cream",
+               "Oral Cetirizine 10mg daily","Oral Cetirizine 10mg daily","Oral Cetirizine 10mg daily","Oral Cetirizine 10mg daily",
+               "Topical Tacrolimus 0.1% ointment"],
+    patient_info=patient_data,
+    doctor_info=doctor_data
+)

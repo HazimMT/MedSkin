@@ -1,0 +1,125 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Report Generator</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/tool.css' %}" />
+</head>
+<body>
+    <div id="navbar">
+        
+    </div>
+    <main>
+        <!-- Step 1: Select Patient ID -->
+        <section class="step">
+            <h2>1. Select Patient ID</h2>
+            <div class="input-container">
+                <input type="text" id="patientID" placeholder="Enter Patient ID" />
+                <button type="button" class="search-btn" onclick="searchPatient()">
+                    🔍
+                </button>
+            </div>
+
+            <!-- Add this patient details section -->
+            <div id="patientDetails" class="hidden" style="margin-top: 15px">
+                <h3>Patient Details</h3>
+                <p><strong>Name:</strong> <span id="patientName"></span></p>
+                <p><strong>Diseases:</strong> <span id="patientDiseases"></span></p>
+            </div>
+        </section>
+
+        <hr />
+
+        <!-- Step 2: Drag and Drop Image -->
+        <section class="step">
+            <h2>2. Drag and Drop Image</h2>
+            <div
+                id="dropArea"
+                class="upload-box"
+                ondrop="handleDrop(event)"
+                ondragover="allowDrop(event)"
+            >
+                <p>Drag and Drop here</p>
+                <input
+                    type="file"
+                    id="fileInput"
+                    onchange="handleFileSelect(event)"
+                    hidden
+                />
+                <button type="button" onclick="document.getElementById('fileInput').click()">
+                    Select file
+                </button>
+            </div>
+            <div id="fileList" style="display: none">
+                <div class="file-details">
+                    <div class="file-info">
+                        <img
+                            src="https://img.icons8.com/ios/50/000000/document--v1.png"
+                            alt="File Icon"
+                        />
+                        <p id="fileName">No file selected</p>
+                    </div>
+                    <button type="button" onclick="removeFile()">
+                        <img
+                            src="https://img.icons8.com/ios-glyphs/30/fa314a/trash.png"
+                            alt="Delete Icon"
+                        />
+                    </button>
+                </div>
+                <progress id="uploadProgress" value="0" max="100"></progress>
+            </div>
+        </section>
+
+        <hr />
+
+        <!-- Step 3: Generate Report -->
+        <section class="step">
+            <h2>3. Generate Report</h2>
+            <button type="button" class="generate-btn" id="generateReportBtn">
+                Click to Generate
+            </button>
+        </section>
+
+        <!-- Report section -->
+        <section id="reportSection" class="report-box" style="display: none">
+            <div class="report-content">
+                <div class="report-info">
+                    <img
+                        src="https://img.icons8.com/color/48/000000/pdf.png"
+                        alt="PDF Icon"
+                        class="pdf-icon"
+                    />
+                    <div class="report-meta">
+                        <span class="report-name">Report.pdf</span>
+                        <span class="report-size">--</span>
+                    </div>
+                </div>
+                <div class="report-actions">
+                    <button type="button" class="icon-button" onclick="downloadReport()">
+                        <img
+                            src="https://img.icons8.com/ios-glyphs/30/000000/download--v1.png"
+                            alt="Download"
+                        />
+                    </button>
+                    <div class="divider"></div>
+                    <button type="button" class="icon-button" onclick="viewReport()">
+                        <img
+                            src="https://img.icons8.com/ios-glyphs/30/000000/visible--v1.png"
+                            alt="View"
+                        />
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/tool.js' %}"></script>
+</body>
+</html>

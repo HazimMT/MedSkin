@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/helpcenter.css' %}">
+</head>
+<body>
+    <div id="navbar"></div>
+
+    <body>
+        <!-- Placeholder for Navbar -->
+        <div id="navbar"></div>
+      
+        <!-- Main Content -->
+        <main>
+          <section class="help-header">
+            <h1>Help Center</h1>
+            <p>Find answers to your questions or contact support.</p>
+      
+            <!-- Search Bar -->
+            <div class="search-container">
+              <input type="text" id="helpSearch" placeholder="Search for help topics...">
+              <button onclick="searchHelp()">🔍</button>
+            </div>
+          </section>
+      
+          <!-- FAQ Section -->
+          <section class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+      
+            <div class="faq-item">
+              <button class="faq-question">
+                How do I add a new patient?
+                <span class="arrow">▶</span>
+              </button>
+              <div class="faq-answer">
+                <p>To add a new patient, go to the Patients page and fill out the form with the required details like ID Number, Full Name, and Diseases.</p>
+              </div>
+            </div>
+      
+            <div class="faq-item">
+              <button class="faq-question">
+                How do I generate a report?
+                <span class="arrow">▶</span>
+              </button>
+              <div class="faq-answer">
+                <p>After adding patient details, navigate to the Tool page, upload any relevant files, and click on "Click to Generate" to create the report.</p>
+              </div>
+            </div>
+      
+            <div class="faq-item">
+              <button class="faq-question">
+                What should I do if I forget my login credentials?
+                <span class="arrow">▶</span>
+              </button>
+              <div class="faq-answer">
+                <p>Click on the "Forgot Password" link on the login page and follow the instructions to reset your password.</p>
+              </div>
+            </div>
+      
+            <div class="faq-item">
+              <button class="faq-question">
+                How do I contact support?
+                <span class="arrow">▶</span>
+              </button>
+              <div class="faq-answer">
+                <p>You can use the contact form below to get in touch with our support team or email us at support@example.com.</p>
+              </div>
+            </div>
+          </section>
+      
+          <hr>
+      
+          <!-- Contact Support Form -->
+          <section class="contact-support">
+            <h2>Still Need Help?</h2>
+            <p>Fill out the form below, and our support team will get back to you shortly.</p>
+      
+            <form id="supportForm">
+              <div class="form-group">
+                <label for="userName">Your Name:</label>
+                <input type="text" id="userName" name="userName" required>
+              </div>
+      
+              <div class="form-group">
+                <label for="userEmail">Your Email:</label>
+                <input type="email" id="userEmail" name="userEmail" required>
+              </div>
+      
+              <div class="form-group">
+                <label for="userMessage">Describe your issue:</label>
+                <textarea id="userMessage" name="userMessage" rows="5" required></textarea>
+              </div>
+      
+              <button type="submit" class="submit-btn">Submit</button>
+            </form>
+      
+            <!-- Confirmation Message -->
+            <div id="supportConfirmation" class="hidden"></div>
+          </section>
+        </main>
+          <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/helpcenter.js' %}"></script>
+</body>
+</html>

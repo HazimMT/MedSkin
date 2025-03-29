@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <title>Islamic University Clinic - Medical Report</title>
+    <style>
+      /* Base styles */
+      @page {
+        margin: 1.5cm;
+        size: A4;
+      }
+
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+        padding: 20px;
+      }
+
+      /* Header styles */
+      .header {
+        text-align: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #007bff;
+      }
+
+      .hospital-name {
+        font-size: 22pt;
+        font-weight: 700;
+        color: #0056b3;
+        margin-bottom: 5px;
+      }
+
+      /* Content container */
+      .content-wrapper {
+        min-height: calc(100vh - 120px);
+        padding-bottom: 60px;
+      }
+
+      /* Section styling */
+      .section {
+        margin: 10px 0;
+        padding: 0; /* Ensure no extra padding */
+        page-break-inside: avoid;
+      }
+
+      .section-title {
+        font-size: 16pt;
+        font-weight: 600;
+        color: #007bff;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      /* Grid layout */
+      .info-grid {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 10px 15px;
+        margin-bottom: 15px;
+      }
+
+      .label {
+        font-weight: 600;
+        color: #666;
+      }
+
+      .value {
+        color: #222;
+        padding-left: 10px;
+      }
+
+      /* Footer styling */
+      .footer {
+        position: relative;
+        height: 40px;
+        margin-top: -40px;
+        clear: both;
+        text-align: center;
+        font-size: 10pt;
+        color: #666;
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+      }
+
+      /* Accuracy Indicator */
+      .accuracy-container {
+        margin: 5px 0;
+        padding-bottom: 5px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #eee;
+      }
+
+      .accuracy-bar {
+        height: 20px;
+        background: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+        margin: 10px 0;
+      }
+
+      .accuracy-fill {
+        height: 100%;
+        transition: width 0.5s ease;
+      }
+
+      .confidence-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        font-size: 12px;
+        color: #6c757d;
+        position: relative;
+      }
+
+      .confidence-level {
+        margin-top: 25px;
+        padding-top: 10px;
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      .accuracy-0-50 {
+        background: #ff6b6b;
+      }
+      .accuracy-50-75 {
+        background: #ffd93d;
+      }
+      .accuracy-75-100 {
+        background: #51cf66;
+      }
+
+      .disease-name {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2b8a3e;
+        margin-bottom: 15px;
+      }
+
+      /* Prescription Section */
+      .prescription-section {
+        margin-top: 15px !important; /* Reduce spacing above prescription */
+      }
+
+      /* Ensure no extra margin in the last section before prescription */
+      .section:last-of-type {
+        margin-bottom: 0;
+      }
+
+      .medication-container {
+        margin: 20px 0;
+      }
+
+      .medication-card {
+        background: #f9f9f9; /* Softer background */
+        border-radius: 10px;
+        padding: 20px;
+        margin: 15px 0;
+        border-left: 8px solid #007bff;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .medication-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+        background: #ffffff;
+      }
+
+      .drug-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-shrink: 0;
+      }
+
+      .drug-icon {
+        font-size: 28px;
+        color: #007bff;
+        background: #e9f2ff;
+        padding: 12px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 50px;
+      }
+
+      .drug-name {
+        color: #2b8a3e;
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+      }
+
+      .drug-description {
+        color: #495057;
+        line-height: 1.6;
+        font-size: 14px;
+      }
+
+      /* Footer Styling */
+      .footer {
+        position: relative;
+        text-align: center;
+        font-size: 11pt;
+        color: #666;
+        border-top: 2px solid #007bff;
+        padding: 15px 0;
+        margin-top: 40px;
+        background: #f8f9fa;
+        border-radius: 5px;
+      }
+
+      .footer a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* Ensure Footer Stays at Bottom */
+      @media screen and (min-height: 700px) {
+        .content-wrapper {
+          min-height: calc(100vh - 100px);
+          display: flex;
+          flex-direction: column;
+        }
+        .footer {
+          margin-top: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content-wrapper">
+      <div class="header">
+        <div class="hospital-name">Islamic University Clinic</div>
+        <div style="font-size: 11pt; color: #666">Madinah, Saudi Arabia</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">MEDICAL REPORT</div>
+        <div class="info-grid">
+          <div class="label">Doctor's Name:</div>
+          <div class="value">{{ doctor_name }}</div>
+
+          <div class="label">Specialization:</div>
+          <div class="value">{{ specialization }}</div>
+
+          <div class="label">Visit Date:</div>
+          <div class="value">{{ visit_date }}</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">PATIENT INFORMATION</div>
+        <div class="info-grid">
+          <div class="label">Full Name:</div>
+          <div class="value">{{ patient_name }}</div>
+
+          <div class="label">Birth Date:</div>
+          <div class="value">{{ birth_date }}</div>
+
+          <div class="label">Medical Number:</div>
+          <div class="value">{{ med_number }}</div>
+
+          <div class="label">Phone:</div>
+          <div class="value">{{ phone }}</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">AI CLINICAL ASSESSMENT</div>
+        <div class="info-grid">
+          <div class="label">Diagnosis:</div>
+          <div class="accuracy-container">
+            <div class="disease-name">{{ disease_name }}</div>
+            <div class="accuracy-bar">
+              <div
+                class="accuracy-fill {% if accuracy <= 0.5 %}accuracy-0-50 {% elif accuracy <= 0.75 %}accuracy-50-75 {% else %}accuracy-75-100 {% endif %}"
+                style="width: {{ accuracy * 100 }}%"
+              ></div>
+            </div>
+            <div class="confidence-labels">
+              <span style="float: left">0%</span>
+              <span
+                style="
+                  position: absolute;
+                  left: 50%;
+                  transform: translateX(-50%);
+                "
+                >50%</span
+              >
+              <span style="float: right">100%</span>
+            </div>
+            <div class="confidence-level">
+              {% if accuracy <= 0.5 %} Not Sure (0-50%) - Needs further
+              examination {% elif accuracy <= 0.75 %} Needs Check (50-75%) -
+              Recommend verification {% else %} Confident (75-100%) - High
+              reliability {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section prescription-section">
+        <div class="section-title">PRESCRIPTION</div>
+        <div class="medication-container">
+          {% for medicine in medicines %}
+          <div class="medication-card">
+            <div class="drug-header">
+              <span class="drug-icon"><i class="fas fa-capsules"></i></span>
+              <h3 class="drug-name">{{ medicine.recommended_drug }}</h3>
+            </div>
+            <div class="drug-description">
+              {{ medicine.description|default("No description available",
+              true)|replace('\r\n', '<br />')|safe }}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="footer">
+        For inquiries and appointments:
+        <a href="tel:+966500000000">+966 50 0000 000</a> |
+        <a href="mailto:info@iu-clinic.com">info@iu-clinic.com</a><br />
+        <a href="https://www.iu-clinic.com">www.iu-clinic.com</a>
+      </div>
+    </div>
+  </body>
+</html>
