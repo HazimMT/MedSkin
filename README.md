@@ -83,18 +83,27 @@ python manage.py loaddata initial_data.json
 
 ## Technical Specifications
 
-### Backend Stack
-- Django 5.1.7 (Web Framework)
-- SQLite (Primary Database)
-- Neo4j (Graph Database)
-- PyTorch 1.12 (ML Framework)
-- pdfkit + wkhtmltopdf (PDF Generation)
-
-### Frontend Stack
-- HTML5 + CSS3
-- Custom CSS Framework
-- Vanilla JavaScript
-- Custom Design System
+### Backend Architecture  
+| Component               | Technology/Package           | Version     | Implementation Details                          |  
+|-------------------------|------------------------------|-------------|-------------------------------------------------|  
+| Web Framework           | Django                       | 4.1.4       | `medskin_backend/settings.py` configuration     |  
+| Primary Database        | SQLite (Development)         | 3.37+       | `DATABASES` in settings.py                      |  
+| Graph Database          | Neo4j                        | 4.4         | `GD.py` driver configuration                    |  
+| ML Framework            | PyTorch                      | 1.12.0      | Integrated via `model_method.ipynb`             |  
+| PDF Generation          | pdfkit + wkhtmltopdf         | 1.0.0       | `Report.py` template rendering                  |  
+| API Security            | django-cors-headers          | 3.13.0      | CORS configuration in settings.py               |  
+| Database ORM            | django-neomodel              | 0.0.9       | Neo4j graph operations in `GD.py`               |  
+| Template Engine         | Jinja2                       | 3.1.2       | HTML template rendering in `Report.py`          |  
+  
+### Frontend Implementation  
+| Component               | Technology                   | Implementation Files                          | Key Features                                  |  
+|-------------------------|------------------------------|-----------------------------------------------|-----------------------------------------------|  
+| Core Markup             | HTML5                        | `templates/tool.html`                         | Semantic structure, WAI-ARIA                 |  
+| Styling                 | CSS3 + Custom Framework      | `static/css/tool.css`, `navbar.css`           | Responsive design, CSS variables              |  
+| Interactivity           | Vanilla JavaScript           | `static/js/tool.js`, `navbar.js`              | DOM manipulation, Fetch API                  |  
+| UI Components           | Custom Design System         | `templates/*.html`                            | Reusable components, BEM methodology         |  
+| File Handling           | Drag & Drop API              | `tool.html` dropzone                          | File validation, progress tracking           |  
+| PDF Handling            | PDF.js (Browser-native)      | `tool.html` report section                    | In-browser preview, download functionality   |
 
 ### Machine Learning Components
 ```python
