@@ -61,7 +61,7 @@ function removeFile() {
 function searchPatient() {
     const patientID = document.getElementById("patientID").value.trim();
     if (!patientID) {
-        alert("Please enter a Patient ID to search.");
+        showModal('error', 'Error', 'Please enter a Patient ID to search.');
         return;
     }
 
@@ -85,7 +85,7 @@ function searchPatient() {
             document.getElementById("patientDetails").classList.remove("hidden");
         })
         .catch(error => {
-            alert(`Error: ${error.message}`);
+            showModal('error', 'Error', error.message);
             console.error('Search Error:', error);
         })
         .finally(() => {
@@ -113,14 +113,14 @@ function handleGenerateReport(event) {
         const fileInput = document.getElementById("fileInput");
         
         if (!patientID) {
-            alert("Please enter a Patient ID!");
+            showModal('error', 'Error', 'Please enter a Patient ID to search.');
             generateBtn.disabled = false;
             generateBtn.textContent = 'Click to Generate';
             return false;
         }
         
         if (!fileInput.files || fileInput.files.length === 0) {
-            alert("Please select an image file!");
+            showModal('error', 'Error', 'Please select an image file!');
             generateBtn.disabled = false;
             generateBtn.textContent = 'Click to Generate';
             return false;
@@ -159,7 +159,7 @@ function handleGenerateReport(event) {
                         
                         // Update report details
                         document.querySelector('.report-name').textContent = `Report_${patientID}.pdf`;
-                        
+                        showModal('success', 'Success', 'Report generated successfully!');
                         if (result.file_size) {
                             document.querySelector('.report-size').textContent = 
                                 `${(result.file_size/1024).toFixed(1)}kb`;
@@ -174,15 +174,15 @@ function handleGenerateReport(event) {
                     }
                 } catch (parseError) {
                     console.error("Error parsing response:", parseError);
-                    alert("Error processing server response: " + parseError.message);
+                    showModal('error', 'Parsing Error', `Error processing server response: ${parseError.message}`);
                 }
             } else {
                 console.error("Server error:", xhr.status, xhr.responseText);
                 try {
                     const errorData = JSON.parse(xhr.responseText);
-                    alert(`Server error: ${errorData.error || xhr.status}`);
+                    showModal('error', 'Server Error', errorData.error || `Server responded with status ${xhr.status}`);
                 } catch (e) {
-                    alert(`Server error: ${xhr.status}`);
+                    showModal('error', 'Server Error', `Server error: ${xhr.status}`);;
                 }
             }
             
@@ -193,7 +193,7 @@ function handleGenerateReport(event) {
         
         xhr.onerror = function() {
             console.error("Network error occurred");
-            alert("Network error. Please check your connection.");
+            showModal('error', 'Network Error', 'Network error. Please check your connection.');
             generateBtn.disabled = false;
             generateBtn.textContent = 'Click to Generate';
         };
@@ -204,7 +204,7 @@ function handleGenerateReport(event) {
         
     } catch (error) {
         console.error("Error in generate report:", error);
-        alert(`Error: ${error.message}`);
+        showModal('error', 'Error', error.message);
         
         // Reset button state
         generateBtn.disabled = false;
@@ -220,7 +220,7 @@ function downloadReport() {
     const pdfUrl = reportSection.dataset.pdfUrl;
     
     if (!pdfUrl) {
-        alert("No PDF URL available. Please generate the report first.");
+        showModal('error', 'Download Error', 'No PDF URL available. Please generate the report first.');
         return;
     }
     
@@ -241,10 +241,35 @@ function viewReport() {
     const pdfUrl = reportSection.dataset.pdfUrl;
     
     if (!pdfUrl) {
-        alert("No PDF URL available. Please generate the report first.");
+        showModal('error', 'View Error', 'No PDF URL available. Please generate the report first.');
         return;
     }
     
     console.log("Opening PDF in new tab:", pdfUrl);
     window.open(pdfUrl, "_blank");
 }
+
+function showModal(type, title, message) {
+    const modal = document.getElementById('messageModal');
+    const modalContent = document.getElementById('modalContent');
+    const modalIcon = document.getElementById('modalIcon');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+  
+    if (type === 'success') {
+      modalContent.className = 'modal-content success';
+      modalIcon.innerHTML = '✔️';
+    } else {
+      modalContent.className = 'modal-content error';
+      modalIcon.innerHTML = '❌';
+    }
+  
+    modalTitle.innerText = title;
+    modalMessage.innerText = message;
+    modal.classList.remove('hidden');
+  }
+  
+  function closeModal() {
+    document.getElementById('messageModal').classList.add('hidden');
+  }
+

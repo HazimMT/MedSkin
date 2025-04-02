@@ -393,3 +393,95 @@ hr {
   }  
     
 
+/* Modal Background */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal Content Box */
+.modal-content {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 300px;
+}
+
+/* Modal Icon Styling */
+.modal-icon {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+/* Title and Message Styling */
+#modalTitle {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#modalMessage {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Modal Button */
+.modal-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Success Modal Styling */
+.success .modal-icon {
+    color: green;
+}
+
+.success #modalTitle {
+    color: green;
+}
+
+.success .modal-btn {
+    background-color: green;
+}
+
+.success .modal-btn:hover {
+    background-color: #0b7a0b;
+}
+
+/* Error Modal Styling */
+.error .modal-icon {
+    color: red;
+}
+
+.error #modalTitle {
+    color: red;
+}
+
+.error .modal-btn {
+    background-color: red;
+}
+
+.error .modal-btn:hover {
+    background-color: #a10000;
+}
+
+/* Hide Modal by Default */
+.hidden {
+    display: none;
+}
