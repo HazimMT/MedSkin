@@ -101,7 +101,6 @@ python manage.py loaddata initial_data.json
 ### Core Modules:
 1. **AI Diagnosis Engine**
    - EfficientNet-B0 model (85%+ accuracy)
-   - Image preprocessing pipeline
    - Confidence-based predictions
 
 2. **Patient Management**
