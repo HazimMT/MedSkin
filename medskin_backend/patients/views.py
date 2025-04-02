@@ -92,18 +92,27 @@ def patients_handler(request):
         # Return a 405 (Method Not Allowed) or handle OPTIONS specially
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
-
 @csrf_exempt
-def patient_detail(request, patient_id):
-    try:
-        patient = Patient.objects.get(patient_id=patient_id)
-        return JsonResponse({
-            'patient_id': patient.patient_id,
-            'full_name': patient.full_name,
-            'diseases': patient.diseases,
-            'birth_date': patient.birth_date.strftime('%Y-%m-%d') if patient.birth_date else None
-        })
-    except Patient.DoesNotExist:
+def patient_detail(request, patient_id):  
+    try:  
+        patient = Patient.objects.get(patient_id=patient_id)  
+        if request.method == 'GET':  
+            return JsonResponse({  
+                'patient_id': patient.patient_id,  
+                'full_name': patient.full_name,  
+                'diseases': patient.diseases,  
+            })  
+        elif request.method == 'DELETE':  
+            patient.delete()  
+            return JsonResponse({'status': 'success'}, status=204)  
+        elif request.method == 'PUT':  
+            data = json.loads(request.body)  
+            patient.patient_id = data.get('patientID', patient.patient_id)  # Allow ID update  
+            patient.full_name = data.get('fullName', patient.full_name)  
+            patient.diseases = data.get('diseases', patient.diseases)  
+            patient.save()  
+            return JsonResponse({'status': 'success', 'message': 'Patient updated'}, status=200)  
+    except Patient.DoesNotExist:  
         return JsonResponse({'error': 'Patient not found'}, status=404)
 
 
@@ -220,7 +229,7 @@ def patient_view(request):
     try:  
         csv_path = os.path.join(settings.BASE_DIR, 'static', 'assets', 'Cleaned_Drug_Data.csv')   
         df = pd.read_csv(csv_path)  
-        unique_drugs = df['diseases'].drop_duplicates().dropna().tolist()    
+        unique_drugs = df['diseases'].drop_duplicates().dropna().sort_values().tolist()    
         return JsonResponse({'drugs': unique_drugs})  
     except Exception as e:    
         return JsonResponse({'error': str(e)}, status=500)

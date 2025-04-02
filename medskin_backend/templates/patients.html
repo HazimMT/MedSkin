@@ -34,14 +34,17 @@
 
         <div class="form-group">
           <label for="diseasesDropdown">Diseases:</label>
-          <div class="dropdown"  id="diseasesDropdownWrapper">  <!-- ADDED wrapper DIV here -->
+          <div class="dropdown" id="diseasesDropdownWrapper">
             <button type="button" class="dropdown-btn" id="diseasesDropdown">
               Select Diseases
+              <span class="arrow">▶</span>
             </button>
-            <div class="dropdown-content" id="diseasesList">
-              <!-- Drug checkboxes will be populated here -->
+            <div class="dropdown-content" id="diseasesList">  
+              <input type="text" id="searchDisease" placeholder="Search..." class="search-box">  
+              <div id="diseasesContainer">  
+                <!-- Options will be inserted here by JavaScript -->  
+              </div>  
             </div>
-          </div>
         </div>
 
         <button type="submit" class="add-btn">Add Patient</button>
@@ -56,6 +59,10 @@
     <!-- Display Added Patients -->
     <section class="patient-list-section">
       <h2>Patients List</h2>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search by ID or Name...">
+        <button class="search-btn" onclick="searchPatients()">🔍</button>
+      </div>
       <ul id="patientsList"></ul>
     </section>
   </main>
@@ -67,6 +74,39 @@
       <h3 id="modalTitle"></h3>
       <p id="modalMessage"></p>
       <button class="modal-btn" onclick="closeModal()">Ok</button>
+    </div>
+  </div>
+
+  <!-- Edit Patient Modal -->
+  <div id="editPatientModal" class="modal hidden">
+    <div class="modal-content edit-modal">
+      <span class="close" onclick="closeEditModal()">&times;</span>
+      <form id="editForm">
+        <div class="form-group">
+          <label for="editPatientID">ID Number:</label>
+          <input type="text" id="editPatientID" name="editPatientID" readonly required>
+        </div>
+        <div class="form-group">
+          <label for="editFullName">Full Name:</label>
+          <input type="text" id="editFullName" name="editFullName" required>
+        </div>
+        <div class="form-group">
+          <label for="editDiseasesDropdown">Diseases:</label>
+          <div class="dropdown" id="editDiseasesDropdownWrapper">
+            <button type="button" class="dropdown-btn" id="editDiseasesDropdown">
+              Select Diseases
+              <span class="arrow">▶</span>
+            </button>
+            <div class="dropdown-content" id="editDiseasesList">  
+              <input type="text" id="searchDiseaseEdit" placeholder="Search..." class="search-box">  
+              <div id="editDiseasesContainer">  
+                <!-- Options will be inserted here by JavaScript -->  
+              </div>  
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="update-btn">Update Patient</button>
+      </form>
     </div>
   </div>
 
