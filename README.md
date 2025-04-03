@@ -11,8 +11,7 @@
    4.2 [Frontend Implementation](#frontend-implementation)    
    4.3 [Machine Learning Components](#machine-learning-components)    
    4.4 [API Endpoints](#api-endpoints)  
-6. [Data Architecture](#data-architecture)  
-7. [Clinical Validation](#clinical-validation)  
+6. [Data Architecture](#data-architecture)    
 8. [Usage Instructions](#usage-instructions)  
 9. [Support and Maintenance](#support-and-maintenance)  
 10. [License](#license)  
@@ -149,24 +148,19 @@ python manage.py loaddata initial_data.json
 | Base Model              | EfficientNet-B0            |  
 | Input Resolution        | 224x224 RGB                |  
 | Output Classes          | 5 skin conditions          |  
-| Training Dataset        | HAM10000 + DermNet         |  
+| Training Dataset        | DermNet                    |  
 | Validation Accuracy     | 85.4%                      |  
-| Inference Time          | 2.1s (CPU), 0.4s (GPU)     |
 
-```python
-# Model Architecture
-model = models.efficientnet_b0(pretrained=False)
-model.classifier[1] = nn.Linear(1280, 5)  # 5 disease classes
+Model Architecture
 
-# Image Preprocessing
-transforms.Compose([
-    transforms.Resize(256),
-    transforms.CenterCrop(224),
-    transforms.ToTensor(),
-    transforms.Normalize([0.485, 0.456, 0.406],
-                        [0.229, 0.224, 0.225])
-])
-```
+Refrence:https://www.researchgate.net/figure/Architecture-of-EfficientNet-B0-with-MBConv-as-Basic-building-blocks_fig3_356981443
+
+Refrence:https://learnopencv.com/efficientnet-theory-code/
+
+![Architecture-of-EfficientNet-B0-with-MBConv-as-Basic-building-blocks](https://github.com/user-attachments/assets/b1550682-27f1-4684-8b74-f818a8c315bd)
+
+![EfficientNet-B0-architecture-1024x511](https://github.com/user-attachments/assets/acc8c153-f7cb-49fe-8069-28b7bf00ed8a)
+
 
 ### API Endpoints
 | Endpoint | Method | Description |
@@ -211,20 +205,6 @@ RETURN d.name, r.efficacy
 ### Data Flow
 User → Django View → PyTorch Model → Neo4j Analysis → PDF Report → User
  
-## CLINICAL VALIDATION  
-  
-### MODEL PERFORMANCE
-  
-| Condition   | Sample Size | Accuracy | Precision | Recall |  
-|-------------|-------------|----------|-----------|--------|  
-| Psoriasis   | 1,240       | 89.2%    | 0.91      | 0.88   |  
-| Eczema      | 980         | 85.1%    | 0.86      | 0.84   |  
-| Herpes      | 650         | 82.7%    | 0.83      | 0.81   |
-
-### Edge Case Handling
- - **Low-Quality Images**: Auto-sharpening filter
- - **Multiple Lesions**: ROI detection system
- - **Rare Conditions**: Fallback to expert review
 
 
 ## Usage Instructions
@@ -261,10 +241,10 @@ This project is currently unlicensed. For usage permissions, please contact the 
 
 ## Acknowledgments
  - Medical Data Sources
-   - DermNet NZ for disease imagery
+   - DermNet for disease imagery
    - DrugBank for pharmacological data
  - Machine Learning
-   - PyTorch Ecosystem
+   - PyTorch
    - EfficientNet paper contributors
   - Core Technologies
     - Django Software Foundation
