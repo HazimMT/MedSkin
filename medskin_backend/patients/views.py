@@ -164,7 +164,7 @@ def generate_report(request):
                 confidence_pct = confidence.item() 
 
             
-            treatments = recommend_drug(predicted_class, patient.diseases )
+            treatments = recommend_drug(predicted_class, patient.diseases)
             
 
             # Prepare data for report
@@ -181,7 +181,6 @@ def generate_report(request):
             }
 
             # Generate the report
-            # ["Clobetasol Propionate 0.05% cream", "Oral Cetirizine 10mg daily"]
             generate_medical_report(
                 output_path=output_path,
                 accuracy=confidence_pct,
@@ -229,7 +228,7 @@ def patient_view(request):
     try:  
         csv_path = os.path.join(settings.BASE_DIR, 'static', 'assets', 'Cleaned_Drug_Data.csv')   
         df = pd.read_csv(csv_path)  
-        unique_drugs = df['diseases'].drop_duplicates().dropna().sort_values().tolist()    
+        unique_drugs = df['name'].drop_duplicates().dropna().sort_values().tolist()    
         return JsonResponse({'drugs': unique_drugs})  
     except Exception as e:    
         return JsonResponse({'error': str(e)}, status=500)

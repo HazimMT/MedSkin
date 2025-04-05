@@ -8,7 +8,7 @@
 
 /* Navbar Styling */
 header {
-    background-color: #174c3c;  /* Dark green background */
+    background-color: #174c3c;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -20,15 +20,21 @@ header {
     z-index: 1000;
 }
 
+/* Add this container around nav for centering */
+.nav-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
 /* Logo Section */
 header .logo img {
     height: 40px;
 }
 
-/* Navigation Links */
+/* Keep nav styling as is or adjust slightly */
 nav {
     display: flex;
-    align-items: center;
 }
 
 nav a {
@@ -70,35 +76,33 @@ nav a.active {
 .user-info {
     display: flex;
     align-items: center;
-}
-
-.user-info span {
-    margin-right: 10px;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.user-info p {
-    margin-right: 10px;
+    gap: 12px;
+  }
+  
+  .user-info span {
+    font-weight: 600;
     font-size: 14px;
-    color: #cfcfcf;
-}
-
-/* User Icon */
-.user-icon {
-    background-color: #0a3a2e;
-    border-radius: 50%;
-    padding: 10px;
-    color: white;
-    font-weight: bold;
-    width: 40px;
-    height: 40px;
+    display: block;
+  }
+  
+  .user-info p {
+    font-size: 13px;
+    color: #d6d6d6;
+    margin-top: 2px;
+  }
+  
+  .user-icon {
+    background-color: #3a6d4f;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-}
-
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+  }
 /* Responsive Navbar for Mobile */
 @media (max-width: 768px) {
     header {
