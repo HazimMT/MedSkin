@@ -172,14 +172,14 @@ python manage.py migrate
 
 ### EfficientNet-B0 Implementation
 
-<div align="center">
+<div align="left">
   <img src="https://github.com/user-attachments/assets/b1550682-27f1-4684-8b74-f818a8c315bd" 
        alt="EfficientNet-B0 MBConv Architecture" 
        width="600">
   <p><em>MBConv Building Blocks Architecture (Source: <a href="https://www.researchgate.net/figure/Architecture-of-EfficientNet-B0-with-MBConv-as-Basic-building-blocks_fig3_356981443">ResearchGate</a>)</em></p>
 </div>
 
-<div align="center">
+<div align="left">
   <img src="https://github.com/user-attachments/assets/acc8c153-f7cb-49fe-8069-28b7bf00ed8a" 
        alt="EfficientNet-B0 Full Architecture" 
        width="600">
