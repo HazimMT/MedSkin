@@ -266,6 +266,6 @@ This project is currently unlicensed. For usage permissions, please contact the 
 ---
 LAST UPDATED: April 2024  
 VERSION: 2.9  
-MAINTAINERS: HazimMT, Ibrahim, O7ss, Dovah3  
+MAINTAINERS: HazimMT, ibrahimAlhazmi, O7ss, Dovah3  
 CONTACT: GitHub Issues (https://github.com/HazimMT/medskin/issues)
 
