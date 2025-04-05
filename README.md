@@ -1,18 +1,17 @@
-# MedSkin - AI-Powered Skin Disease Diagnosis & Management System
+# Intelligent Medical Diagnostics and Treatments of Skin Diseases  
 
 1. [Project Overview](#project-overview)
 2. [System Architecture](#system-architecture)
 3. [Installation Guide](#installation-guide)    
-   2.1 [Prerequisites](#prerequisites)    
-   2.2 [Setup Steps](#setup-steps)  
+   3.1 [Prerequisites](#prerequisites)    
+   3.2 [Setup Steps](#setup-steps)  
 4. [Key Features](#key-features)  
 5. [Technical Specifications](#technical-specifications)    
-   4.1 [Backend Architecture](#backend-architecture)    
-   4.2 [Frontend Implementation](#frontend-implementation)    
-   4.3 [Machine Learning Components](#machine-learning-components)    
-   4.4 [API Endpoints](#api-endpoints)  
-6. [Data Architecture](#data-architecture)  
-7. [Clinical Validation](#clinical-validation)  
+   5.1 [Backend Architecture](#backend-architecture)    
+   5.2 [Frontend Implementation](#frontend-implementation)        
+   5.3 [API Endpoints](#api-endpoints)
+6. [Model Architecture](#model-architecture)
+7. [Data Architecture](#data-architecture)    
 8. [Usage Instructions](#usage-instructions)  
 9. [Support and Maintenance](#support-and-maintenance)  
 10. [License](#license)  
@@ -21,12 +20,14 @@
 
 
 ## Project Overview
-MedSkin is an intelligent web application combining AI-powered skin disease detection with comprehensive patient management. The system features:
+Intelligent Medical Diagnostics and Treatments of Skin Diseases is a smart web-based application designed to support dermatologists in making accurate, personalized, and effective decisions. The system combines AI-driven skin condition recognition with advanced treatment recommendations and patient management. The system features:
 
 - 🩺 Deep Learning-based disease classification (5 skin conditions)
+  - Automatically analyzes patient skin images to detect and classify five common skin conditions with high accuracy.
 - 💊 Smart drug interaction checking using graph databases
+  - Leverages a graph-based structure to interpret patient medical records, identify patterns, and recommend appropriate treatments while checking for drug interactions.
 - 📊 Automated medical report generation
-- 📈 Treatment effectiveness tracking
+  - Produces comprehensive medical reports combining diagnosis results and treatment suggestions to streamline the clinical workflow.
 
 ## System Architecture
 
@@ -51,7 +52,6 @@ graph TD
 
 ### Prerequisites
 - Python 3.10+
-- SQLite 3
 - Neo4j 5.28
 - wkhtmltopdf 0.12.6
 
@@ -93,7 +93,7 @@ PASSWORD = "newpassword"
 5. Initialize system:
 ```bash
 python manage.py migrate
-python manage.py loaddata initial_data.json
+
 ```
 
 ## Key Features
@@ -101,7 +101,6 @@ python manage.py loaddata initial_data.json
 ### Core Modules:
 1. **AI Diagnosis Engine**
    - EfficientNet-B0 model (85%+ accuracy)
-   - Image preprocessing pipeline
    - Confidence-based predictions
 
 2. **Patient Management**
@@ -143,50 +142,58 @@ python manage.py loaddata initial_data.json
 | File Handling           | Drag & Drop API              | `tool.html` dropzone                          | File validation, progress tracking           |  
 | PDF Handling            | PDF.js (Browser-native)      | `tool.html` report section                    | In-browser preview, download functionality   |
 
-### Machine Learning Components
+### API Endpoints
+| Endpoint | Method | Description | Request Body | Success Response |
+|----------|--------|-------------|--------------|------------------|
+| `/api/patients/` | GET | List all patients | None | 200: List of patients |
+| `/api/patients/` | POST | Create new patient | `{patientID, fullName, diseases}` | 201: Created patient |
+| `/api/patients/{id}/` | GET | Get patient details | None | 200: Patient data |
+| `/api/patients/{id}/` | PUT | Update patient | `{patientID?, fullName?, diseases?}` | 200: Update success |
+| `/api/patients/{id}/` | DELETE | Delete patient | None | 204: No content |
+| `/api/reports/` | POST | Generate medical report | `patient_id, image` | 200: PDF URL |
+| `/api/drugs/` | GET | List available medications | None | 200: Drug list |
 
+### API Error Reference 
+| HTTP Code | Error Type                | Resolution Steps                      |  
+|-----------|---------------------------|---------------------------------------|  
+| 400       | Invalid Patient ID        | Verify ID format (P-XXXX-XXXX)        |  
+| 400       | Missing Required Field    | Check request body parameters         |  
+| 403       | Cross-Origin Rejected     | Check CORS configuration              |  
+| 404       | Patient Not Found         | Verify patient exists                 |  
+| 409       | Duplicate Patient ID      | Use unique patient ID                 |  
+| 415       | Invalid Image Format      | Upload JPEG/PNG under 5MB             |  
+| 422       | Validation Error          | Check request data types              |  
+| 429       | Rate Limit Exceeded       | Wait 60 seconds between requests      |  
+| 500       | PDF Generation Failed     | Check wkhtmltopdf installation        |  
+| 503       | Database Connection Error | Verify Neo4j service status           |
+
+
+## Model Architecture
+
+### EfficientNet-B0 Implementation
+
+<div align="left">
+  <img src="https://github.com/user-attachments/assets/b1550682-27f1-4684-8b74-f818a8c315bd" 
+       alt="EfficientNet-B0 MBConv Architecture" 
+       width="600">
+  <p><em>MBConv Building Blocks Architecture (Source: <a href="https://www.researchgate.net/figure/Architecture-of-EfficientNet-B0-with-MBConv-as-Basic-building-blocks_fig3_356981443">ResearchGate</a>)</em></p>
+</div>
+
+<div align="left">
+  <img src="https://github.com/user-attachments/assets/acc8c153-f7cb-49fe-8069-28b7bf00ed8a" 
+       alt="EfficientNet-B0 Full Architecture" 
+       width="600">
+  <p><em>Complete Model Architecture (Source: <a href="https://learnopencv.com/efficientnet-theory-code/">LearnOpenCV</a>)</em></p>
+</div>
+
+### Key Components
 | Component               | Specification              |  
 |-------------------------|----------------------------|  
 | Base Model              | EfficientNet-B0            |  
 | Input Resolution        | 224x224 RGB                |  
 | Output Classes          | 5 skin conditions          |  
-| Training Dataset        | HAM10000 + DermNet         |  
-| Validation Accuracy     | 85.4%                      |  
-| Inference Time          | 2.1s (CPU), 0.4s (GPU)     |
-
-```python
-# Model Architecture
-model = models.efficientnet_b0(pretrained=False)
-model.classifier[1] = nn.Linear(1280, 5)  # 5 disease classes
-
-# Image Preprocessing
-transforms.Compose([
-    transforms.Resize(256),
-    transforms.CenterCrop(224),
-    transforms.ToTensor(),
-    transforms.Normalize([0.485, 0.456, 0.406],
-                        [0.229, 0.224, 0.225])
-])
-```
-
-### API Endpoints
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/patients/` | GET | List all patients |
-| `/api/patients/{id}/` | GET | Get patient details |
-| `/api/reports/` | POST | Generate medical report |
-| `/api/drugs/` | GET | List available medications |
-
-### API Error Reference 
-  
-| HTTP Code | Error Type                | Resolution Steps                      |  
-|-----------|---------------------------|---------------------------------------|  
-| 400       | Invalid Patient ID        | Verify ID format (P-XXXX-XXXX)        |  
-| 403       | Cross-Origin Rejected     | Check CORS configuration              |  
-| 415       | Invalid Image Format      | Upload JPEG/PNG under 5MB             |  
-| 429       | Rate Limit Exceeded       | Wait 60 seconds between requests      |  
-| 500       | PDF Generation Failed     | Check wkhtmltopdf installation        |  
-| 503       | Database Connection Error | Verify Neo4j service status           |
+| Training Dataset        | DermNet                    |  
+| Validation Accuracy     | 85.4%                      | 
 
 
 ## DATA ARCHITECTURE  
@@ -211,22 +218,6 @@ RETURN d.name, r.efficacy
 
 ### Data Flow
 User → Django View → PyTorch Model → Neo4j Analysis → PDF Report → User
- 
-## CLINICAL VALIDATION  
-  
-### MODEL PERFORMANCE
-  
-| Condition   | Sample Size | Accuracy | Precision | Recall |  
-|-------------|-------------|----------|-----------|--------|  
-| Psoriasis   | 1,240       | 89.2%    | 0.91      | 0.88   |  
-| Eczema      | 980         | 85.1%    | 0.86      | 0.84   |  
-| Herpes      | 650         | 82.7%    | 0.83      | 0.81   |
-
-### Edge Case Handling
- - **Low-Quality Images**: Auto-sharpening filter
- - **Multiple Lesions**: ROI detection system
- - **Rare Conditions**: Fallback to expert review
-
 
 ## Usage Instructions
 
@@ -262,10 +253,10 @@ This project is currently unlicensed. For usage permissions, please contact the 
 
 ## Acknowledgments
  - Medical Data Sources
-   - DermNet NZ for disease imagery
+   - DermNet for disease imagery
    - DrugBank for pharmacological data
  - Machine Learning
-   - PyTorch Ecosystem
+   - PyTorch
    - EfficientNet paper contributors
   - Core Technologies
     - Django Software Foundation
@@ -273,8 +264,8 @@ This project is currently unlicensed. For usage permissions, please contact the 
     - WKHTMLTOPDF developers
 
 ---
-LAST UPDATED: March 2024  
-VERSION: 2.0.0  
-MAINTAINER: HazimMT  
+LAST UPDATED: April 2024  
+VERSION: 2.9  
+MAINTAINERS: HazimMT, Ibrahim, O7ss, Dovah3  
 CONTACT: GitHub Issues (https://github.com/HazimMT/medskin/issues)
 
