@@ -1,4 +1,4 @@
-# Intelligent Medical Diagnostics and Treatments of Skin Diseases  - AI-Powered Skin Disease Diagnosis & Management System
+# Intelligent Medical Diagnostics and Treatments of Skin Diseases  
 
 1. [Project Overview](#project-overview)
 2. [System Architecture](#system-architecture)
