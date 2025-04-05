@@ -3,8 +3,8 @@
 1. [Project Overview](#project-overview)
 2. [System Architecture](#system-architecture)
 3. [Installation Guide](#installation-guide)    
-   2.1 [Prerequisites](#prerequisites)    
-   2.2 [Setup Steps](#setup-steps)  
+   3.1 [Prerequisites](#prerequisites)    
+   3.2 [Setup Steps](#setup-steps)  
 4. [Key Features](#key-features)  
 5. [Technical Specifications](#technical-specifications)    
    5.1 [Backend Architecture](#backend-architecture)    
@@ -20,11 +20,14 @@
 
 
 ## Project Overview
-Intelligent Medical Diagnostics and Treatments of Skin Diseases is an intelligent web application combining AI-powered skin disease detection with comprehensive patient management. The system features:
+Intelligent Medical Diagnostics and Treatments of Skin Diseases is a smart web-based application designed to support dermatologists in making accurate, personalized, and effective decisions. The system combines AI-driven skin condition recognition with advanced treatment recommendations and patient management. The system features:
 
 - 🩺 Deep Learning-based disease classification (5 skin conditions)
+  - Automatically analyzes patient skin images to detect and classify five common skin conditions with high accuracy.
 - 💊 Smart drug interaction checking using graph databases
+  - Leverages a graph-based structure to interpret patient medical records, identify patterns, and recommend appropriate treatments while checking for drug interactions.
 - 📊 Automated medical report generation
+  - Produces comprehensive medical reports combining diagnosis results and treatment suggestions to streamline the clinical workflow.
 
 ## System Architecture
 
@@ -90,7 +93,7 @@ PASSWORD = "newpassword"
 5. Initialize system:
 ```bash
 python manage.py migrate
-python manage.py loaddata initial_data.json
+
 ```
 
 ## Key Features
@@ -140,23 +143,30 @@ python manage.py loaddata initial_data.json
 | PDF Handling            | PDF.js (Browser-native)      | `tool.html` report section                    | In-browser preview, download functionality   |
 
 ### API Endpoints
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/patients/` | GET | List all patients |
-| `/api/patients/{id}/` | GET | Get patient details |
-| `/api/reports/` | POST | Generate medical report |
-| `/api/drugs/` | GET | List available medications |
+| Endpoint | Method | Description | Request Body | Success Response |
+|----------|--------|-------------|--------------|------------------|
+| `/api/patients/` | GET | List all patients | None | 200: List of patients |
+| `/api/patients/` | POST | Create new patient | `{patientID, fullName, diseases}` | 201: Created patient |
+| `/api/patients/{id}/` | GET | Get patient details | None | 200: Patient data |
+| `/api/patients/{id}/` | PUT | Update patient | `{patientID?, fullName?, diseases?}` | 200: Update success |
+| `/api/patients/{id}/` | DELETE | Delete patient | None | 204: No content |
+| `/api/reports/` | POST | Generate medical report | `patient_id, image` | 200: PDF URL |
+| `/api/drugs/` | GET | List available medications | None | 200: Drug list |
 
 ### API Error Reference 
-  
 | HTTP Code | Error Type                | Resolution Steps                      |  
 |-----------|---------------------------|---------------------------------------|  
 | 400       | Invalid Patient ID        | Verify ID format (P-XXXX-XXXX)        |  
+| 400       | Missing Required Field    | Check request body parameters         |  
 | 403       | Cross-Origin Rejected     | Check CORS configuration              |  
+| 404       | Patient Not Found         | Verify patient exists                 |  
+| 409       | Duplicate Patient ID      | Use unique patient ID                 |  
 | 415       | Invalid Image Format      | Upload JPEG/PNG under 5MB             |  
+| 422       | Validation Error          | Check request data types              |  
 | 429       | Rate Limit Exceeded       | Wait 60 seconds between requests      |  
 | 500       | PDF Generation Failed     | Check wkhtmltopdf installation        |  
 | 503       | Database Connection Error | Verify Neo4j service status           |
+
 
 ## Model Architecture
 
@@ -208,8 +218,6 @@ RETURN d.name, r.efficacy
 
 ### Data Flow
 User → Django View → PyTorch Model → Neo4j Analysis → PDF Report → User
- 
-
 
 ## Usage Instructions
 
@@ -256,8 +264,8 @@ This project is currently unlicensed. For usage permissions, please contact the 
     - WKHTMLTOPDF developers
 
 ---
-LAST UPDATED: March 2024  
-VERSION: 2.0.0  
-MAINTAINER: HazimMT  
+LAST UPDATED: April 2024  
+VERSION: 2.9  
+MAINTAINERS: HazimMT, Ibrahim, O7ss, Dovah3  
 CONTACT: GitHub Issues (https://github.com/HazimMT/medskin/issues)
 
