@@ -8,10 +8,10 @@
 4. [Key Features](#key-features)  
 5. [Technical Specifications](#technical-specifications)    
    4.1 [Backend Architecture](#backend-architecture)    
-   4.2 [Frontend Implementation](#frontend-implementation)    
-   4.3 [Machine Learning Components](#machine-learning-components)    
-   4.4 [API Endpoints](#api-endpoints)  
-6. [Data Architecture](#data-architecture)    
+   4.2 [Frontend Implementation](#frontend-implementation)        
+   4.3 [API Endpoints](#api-endpoints)
+6. [Model Architecture](#model-architecture)
+7. [Data Architecture](#data-architecture)    
 8. [Usage Instructions](#usage-instructions)  
 9. [Support and Maintenance](#support-and-maintenance)  
 10. [License](#license)  
@@ -141,27 +141,6 @@ python manage.py loaddata initial_data.json
 | File Handling           | Drag & Drop API              | `tool.html` dropzone                          | File validation, progress tracking           |  
 | PDF Handling            | PDF.js (Browser-native)      | `tool.html` report section                    | In-browser preview, download functionality   |
 
-### Machine Learning Components
-
-| Component               | Specification              |  
-|-------------------------|----------------------------|  
-| Base Model              | EfficientNet-B0            |  
-| Input Resolution        | 224x224 RGB                |  
-| Output Classes          | 5 skin conditions          |  
-| Training Dataset        | DermNet                    |  
-| Validation Accuracy     | 85.4%                      |  
-
-Model Architecture
-
-Refrence:https://www.researchgate.net/figure/Architecture-of-EfficientNet-B0-with-MBConv-as-Basic-building-blocks_fig3_356981443
-
-Refrence:https://learnopencv.com/efficientnet-theory-code/
-
-![Architecture-of-EfficientNet-B0-with-MBConv-as-Basic-building-blocks](https://github.com/user-attachments/assets/b1550682-27f1-4684-8b74-f818a8c315bd)
-
-![EfficientNet-B0-architecture-1024x511](https://github.com/user-attachments/assets/acc8c153-f7cb-49fe-8069-28b7bf00ed8a)
-
-
 ### API Endpoints
 | Endpoint | Method | Description |
 |----------|--------|-------------|
@@ -180,6 +159,33 @@ Refrence:https://learnopencv.com/efficientnet-theory-code/
 | 429       | Rate Limit Exceeded       | Wait 60 seconds between requests      |  
 | 500       | PDF Generation Failed     | Check wkhtmltopdf installation        |  
 | 503       | Database Connection Error | Verify Neo4j service status           |
+
+## Model Architecture
+
+### EfficientNet-B0 Implementation
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/b1550682-27f1-4684-8b74-f818a8c315bd" 
+       alt="EfficientNet-B0 MBConv Architecture" 
+       width="600">
+  <p><em>MBConv Building Blocks Architecture (Source: <a href="https://www.researchgate.net/figure/Architecture-of-EfficientNet-B0-with-MBConv-as-Basic-building-blocks_fig3_356981443">ResearchGate</a>)</em></p>
+</div>
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/acc8c153-f7cb-49fe-8069-28b7bf00ed8a" 
+       alt="EfficientNet-B0 Full Architecture" 
+       width="600">
+  <p><em>Complete Model Architecture (Source: <a href="https://learnopencv.com/efficientnet-theory-code/">LearnOpenCV</a>)</em></p>
+</div>
+
+### Key Components
+| Component               | Specification              |  
+|-------------------------|----------------------------|  
+| Base Model              | EfficientNet-B0            |  
+| Input Resolution        | 224x224 RGB                |  
+| Output Classes          | 5 skin conditions          |  
+| Training Dataset        | DermNet                    |  
+| Validation Accuracy     | 85.4%                      | 
 
 
 ## DATA ARCHITECTURE  
