@@ -20,7 +20,7 @@
 
 
 ## Project Overview
-MedSkin is an intelligent web application combining AI-powered skin disease detection with comprehensive patient management. The system features:
+Intelligent Medical Diagnostics and Treatments of Skin Diseases is an intelligent web application combining AI-powered skin disease detection with comprehensive patient management. The system features:
 
 - 🩺 Deep Learning-based disease classification (5 skin conditions)
 - 💊 Smart drug interaction checking using graph databases
