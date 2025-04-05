@@ -25,7 +25,6 @@ MedSkin is an intelligent web application combining AI-powered skin disease dete
 - 🩺 Deep Learning-based disease classification (5 skin conditions)
 - 💊 Smart drug interaction checking using graph databases
 - 📊 Automated medical report generation
-- 📈 Treatment effectiveness tracking
 
 ## System Architecture
 
@@ -50,7 +49,6 @@ graph TD
 
 ### Prerequisites
 - Python 3.10+
-- SQLite 3
 - Neo4j 5.28
 - wkhtmltopdf 0.12.6
 
