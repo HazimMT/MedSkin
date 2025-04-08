@@ -21,16 +21,16 @@ def recommend_drug(disease, current_drugs):
         return results.data()
 
 
-disease = "Rosacea"
-record = ['Etanercept']
+disease = "Acne Vulgaris"
+record = ['Acitretin']
 
 recommendations = recommend_drug(disease, record)
 
-if recommendations:
-    print("Recommended Drugs:")
-    for recommendation in recommendations:
-        print(f"- {recommendation['recommended_drug']}")
-else:
-    print("No suitable drug found that treats the specified disease and does not interact with the patients record.")
+# if recommendations:
+#     print("Recommended Drugs:")
+#     for recommendation in recommendations:
+#         print(f"- {recommendation['recommended_drug']}")
+# else:
+#     print("No suitable drug found that treats the specified disease and does not interact with the patients record.")
 
 driver.close()

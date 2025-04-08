@@ -35,26 +35,27 @@ logger = logging.getLogger(__name__)
 # Create your views here.
 
 
-# Add model configuration after imports  
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'model', 'model_epoch_9.pth')  
-CLASS_NAMES = [  
-    'Acne and Rosacea Photos',  
-    'Eczema Photos',  
-    'Psoriasis pictures',  
-    'Urticaria Hives',  
-    'Herpes, HPV, and other STDs'  
-]  
+# Model configuration after imports  
+MODEL_PATH = os.path.join(settings.BASE_DIR, 'model', 'best_model.pth')  
+class_names = ["Acne Vulgaris", 
+               "Eczema", 
+               "Healthy", 
+               "Herpes Labialis", 
+               "Lichen Planus", 
+               "Psoriasis", 
+               "Rosacea", 
+               "Urticaria"]  
 
 # Load model once at startup  
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  
 model = models.efficientnet_b0(pretrained=False)  
 num_ftrs = model.classifier[1].in_features  
-model.classifier[1] = torch.nn.Linear(num_ftrs, len(CLASS_NAMES))  
+model.classifier[1] = torch.nn.Linear(num_ftrs, len(class_names))  
 model.load_state_dict(torch.load(MODEL_PATH, map_location=device))  
 model = model.to(device)  
 model.eval()  
 
-# Add this preprocessing function  
+# Preprocessing function  
 def preprocess_image(image_file):  
     transform = transforms.Compose([  
         transforms.Resize(256),  
@@ -153,16 +154,18 @@ def generate_report(request):
             filename = f"report_{patient_id}_{timestamp}.pdf"
             output_path = os.path.join(reports_dir, filename)
 
-            # Process image through model  
-            with torch.no_grad():  
+            
+            with torch.no_grad():
                 image_tensor = preprocess_image(image)  
-                outputs = model(image_tensor)  
-                probabilities = torch.nn.functional.softmax(outputs, dim=1)  
-                confidence, preds = torch.max(probabilities, 1)  
+                outputs = model(image_tensor)
+                probabilities = torch.nn.functional.softmax(outputs, dim=1)
+                confidence, preds = torch.max(probabilities, 1)
+                threshold=0.5
+                if confidence.item() < threshold:
+                     predicted_class, confidence_pct= "Unknown", confidence.item() * 100
 
-                predicted_class = CLASS_NAMES[preds.item()]  
-                confidence_pct = confidence.item() 
-
+                predicted_class, confidence_pct= class_names[preds.item()], confidence.item() * 100
+            
             
             treatments = recommend_drug(predicted_class, patient.diseases)
             

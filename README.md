@@ -1,21 +1,29 @@
 # Intelligent Medical Diagnostics and Treatments of Skin Diseases  
 
-1. [Project Overview](#project-overview)
-2. [System Architecture](#system-architecture)
-3. [Installation Guide](#installation-guide)    
-   3.1 [Prerequisites](#prerequisites)    
-   3.2 [Setup Steps](#setup-steps)  
-4. [Key Features](#key-features)  
-5. [Technical Specifications](#technical-specifications)    
-   5.1 [Backend Architecture](#backend-architecture)    
-   5.2 [Frontend Implementation](#frontend-implementation)        
-   5.3 [API Endpoints](#api-endpoints)
-6. [Model Architecture](#model-architecture)
-7. [Data Architecture](#data-architecture)    
-8. [Usage Instructions](#usage-instructions)  
-9. [Support and Maintenance](#support-and-maintenance)  
-10. [License](#license)  
-11. [Acknowledgments](#acknowledgments)
+- [Intelligent Medical Diagnostics and Treatments of Skin Diseases](#intelligent-medical-diagnostics-and-treatments-of-skin-diseases)
+  - [Project Overview](#project-overview)
+  - [System Architecture](#system-architecture)
+  - [Installation Guide](#installation-guide)
+    - [Prerequisites](#prerequisites)
+    - [Setup Steps](#setup-steps)
+  - [Key Features](#key-features)
+    - [Core Modules:](#core-modules)
+  - [Technical Specifications](#technical-specifications)
+    - [Backend Architecture](#backend-architecture)
+    - [Frontend Implementation](#frontend-implementation)
+    - [API Endpoints](#api-endpoints)
+    - [API Error Reference](#api-error-reference)
+  - [Model Architecture](#model-architecture)
+    - [EfficientNet-B0 Implementation](#efficientnet-b0-implementation)
+    - [Key Components](#key-components)
+  - [DATA ARCHITECTURE](#data-architecture)
+    - [SQLite Schema (Patient Management):](#sqlite-schema-patient-management)
+    - [Neo4j Graph Structure (Drug Interactions):](#neo4j-graph-structure-drug-interactions)
+    - [Data Flow](#data-flow)
+  - [Usage Instructions](#usage-instructions)
+  - [Support and Maintenance](#support-and-maintenance)
+  - [License](#license)
+  - [Acknowledgments](#acknowledgments)
 
 
 
@@ -266,6 +274,6 @@ This project is currently unlicensed. For usage permissions, please contact the 
 ---
 LAST UPDATED: April 2024  
 VERSION: 2.9  
-MAINTAINERS: HazimMT, Ibrahim, O7ss, Dovah3  
+MAINTAINER: HazimMT  
 CONTACT: GitHub Issues (https://github.com/HazimMT/medskin/issues)
 
