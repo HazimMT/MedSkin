@@ -35,23 +35,25 @@ logger = logging.getLogger(__name__)
 # Create your views here.
 
 
-# Model configuration after imports  
+# Model configuration  
 MODEL_PATH = os.path.join(settings.BASE_DIR, 'model', 'best_model.pth')  
-class_names = ["Acne Vulgaris", 
-               "Eczema", 
-               "Healthy", 
-               "Herpes Labialis", 
-               "Lichen Planus", 
-               "Psoriasis", 
-               "Rosacea", 
+class_names = ["Acne Vulgaris",  
+               "Eczema",  
+               "Healthy",  
+               "Herpes Labialis",  
+               "Lichen Planus",  
+               "Psoriasis",  
+               "Rosacea",  
                "Urticaria"]  
 
-# Load model once at startup  
+# Device setup  
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  
+
+# Load model securely  
 model = models.efficientnet_b0(pretrained=False)  
 num_ftrs = model.classifier[1].in_features  
 model.classifier[1] = torch.nn.Linear(num_ftrs, len(class_names))  
-model.load_state_dict(torch.load(MODEL_PATH, map_location=device))  
+model.load_state_dict(torch.load(MODEL_PATH, map_location=device))    
 model = model.to(device)  
 model.eval()  
 
@@ -64,10 +66,25 @@ def preprocess_image(image_file):
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])  
     ])  
 
-    image = Image.open(image_file).convert('RGB')  
-    return transform(image).unsqueeze(0).to(device)
+    try:  
+        image = Image.open(image_file).convert('RGB')  
+        return transform(image).unsqueeze(0).to(device)  
+    except Exception as e:  
+        logger.error(f"Image processing failed: {str(e)}")  
+        raise ValueError("Invalid image file format")
 
+def predict_real_image(image_file, model, threshold=0.5):  
+    input_tensor = preprocess_image(image_file)  
 
+    with torch.no_grad():  
+        outputs = model(input_tensor)  
+        probabilities = torch.nn.functional.softmax(outputs, dim=1)  
+        confidence, preds = torch.max(probabilities, 1)  
+
+    if confidence.item() < threshold:  
+        return "Unknown / No Disease", confidence.item() * 100  
+
+    return class_names[preds.item()], confidence.item() * 100
 
 @csrf_exempt
 def patients_handler(request):
@@ -154,21 +171,12 @@ def generate_report(request):
             filename = f"report_{patient_id}_{timestamp}.pdf"
             output_path = os.path.join(reports_dir, filename)
 
-            
-            with torch.no_grad():
-                image_tensor = preprocess_image(image)  
-                outputs = model(image_tensor)
-                probabilities = torch.nn.functional.softmax(outputs, dim=1)
-                confidence, preds = torch.max(probabilities, 1)
-                threshold=0.5
-                if confidence.item() < threshold:
-                     predicted_class, confidence_pct= "Unknown", confidence.item() * 100
+            predicted_class, confidence_pct = predict_real_image(image_file=image, model=model)
 
-                predicted_class, confidence_pct= class_names[preds.item()], confidence.item() * 100
-            
-            
-            treatments = recommend_drug(predicted_class, patient.diseases)
-            
+            treatments = recommend_drug(  
+                predicted_class if predicted_class != "Unknown / No Disease" else None,  
+                patient.diseases  
+            )
 
             # Prepare data for report
             patient_info = {
