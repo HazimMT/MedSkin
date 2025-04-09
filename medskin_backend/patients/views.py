@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 
 
 # Model configuration  
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'model', 'best_model.pth')  
+MODEL_PATH = os.path.join(settings.BASE_DIR, 'model', 'end.pth')  
 class_names = ["Acne Vulgaris",  
                "Eczema",  
                "Healthy",  
@@ -73,19 +73,61 @@ def preprocess_image(image_file):
         logger.error(f"Image processing failed: {str(e)}")  
         raise ValueError("Invalid image file format")
 
-def predict_real_image(image_file, model, threshold=0.5):  
-    input_tensor = preprocess_image(image_file)  
+def predict_real_image(image_file, model, threshold=0.5, tta=False):
+    preprocess_base = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406],
+                             [0.229, 0.224, 0.225])
+    ])
 
-    with torch.no_grad():  
-        outputs = model(input_tensor)  
-        probabilities = torch.nn.functional.softmax(outputs, dim=1)  
-        confidence, preds = torch.max(probabilities, 1)  
+    if not tta:
+        image = Image.open(image_file).convert('RGB')
+        input_tensor = preprocess_base(image).unsqueeze(0).to(device)
+        with torch.no_grad():
+            outputs = model(input_tensor)
+            probabilities = torch.nn.functional.softmax(outputs, dim=1)
+            confidence, preds = torch.max(probabilities, 1)
+        if confidence.item() < threshold:
+            return "Unknown / No Disease", confidence.item() * 100
+        return class_names[preds.item()], confidence.item() * 100
 
-    if confidence.item() < threshold:  
-        return "Unknown / No Disease", confidence.item() * 100  
+    else:
+        # Test Time Augmentation (TTA)
+        tta_transforms = [
+            transforms.Compose([
+                transforms.Resize(256),
+                transforms.RandomHorizontalFlip(p=1.0),
+                transforms.CenterCrop(224),
+                transforms.ToTensor(),
+                transforms.Normalize([0.485, 0.456, 0.406],
+                                     [0.229, 0.224, 0.225])
+            ]),
+            transforms.Compose([
+                transforms.Resize(256),
+                transforms.RandomRotation(10),
+                transforms.CenterCrop(224),
+                transforms.ToTensor(),
+                transforms.Normalize([0.485, 0.456, 0.406],
+                                     [0.229, 0.224, 0.225])
+            ]),
+            preprocess_base
+        ]
+        image = Image.open(image_file).convert('RGB')
+        preds_sum = torch.zeros(len(class_names)).to(device)
+        for tform in tta_transforms:
+            input_tensor = tform(image).unsqueeze(0).to(device)
+            with torch.no_grad():
+                outputs = model(input_tensor)
+                probabilities = torch.nn.functional.softmax(outputs, dim=1)
+                preds_sum += probabilities.squeeze()
 
-    return class_names[preds.item()], confidence.item() * 100
-
+        avg_probs = preds_sum / len(tta_transforms)
+        confidence, pred_idx = torch.max(avg_probs, 0)
+        if confidence.item() < threshold:
+            return "Unknown / No Disease", confidence.item() * 100
+        return class_names[pred_idx.item()], confidence.item() * 100
 @csrf_exempt
 def patients_handler(request):
     if request.method == 'GET':
